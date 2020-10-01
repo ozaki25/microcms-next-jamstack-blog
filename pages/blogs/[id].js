@@ -1,6 +1,8 @@
 import styles from '../../styles/Home.module.scss';
 
 export default function BlogId({ blog }) {
+  if (!blog) return <p>Not Found</p>;
+
   return (
     <main className={styles.main}>
       <h1 className={styles.title}>{blog.title}</h1>
@@ -34,7 +36,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async context => {
   const id = context.params.id;
-  const draftKey = context.previewData.draftKey;
+  const draftKey = context.previewData?.draftKey;
 
   const key = {
     headers: { 'X-API-KEY': process.env.API_KEY },
