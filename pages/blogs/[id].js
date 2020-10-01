@@ -29,18 +29,21 @@ export const getStaticPaths = async () => {
     .catch(() => null);
 
   const paths = repos.contents.map(repo => `/blogs/${repo.id}`);
-  return { paths, fallback: false };
+  return { paths, fallback: true };
 };
 
 export const getStaticProps = async context => {
   const id = context.params.id;
+  const draftKey = context.previewData.draftKey;
 
   const key = {
     headers: { 'X-API-KEY': process.env.API_KEY },
   };
 
   const data = await fetch(
-    `https://${process.env.API_DOMAIN}.microcms.io/api/v1/blogs/` + id,
+    `https://${process.env.API_DOMAIN}.microcms.io/api/v1/blogs/${id}${
+      draftKey ? `?draftKey=${draftKey}` : ''
+    }`,
     key,
   )
     .then(res => res.json())
