@@ -5,7 +5,7 @@ export default async (req, res) => {
 
   const content = await fetch(
     `https://${process.env.API_DOMAIN}.microcms.io/api/v1/blogs/${req.query.slug}?fields=id&draftKey=${req.query.draftKey}`,
-    { headers: { 'X-API-KEY': process.env.apiKey } },
+    { headers: { 'X-API-KEY': process.env.API_KEY } },
   )
     .then(res => res.json())
     .catch(error => null);
@@ -16,6 +16,6 @@ export default async (req, res) => {
     slug: content.id,
     draftKey: req.query.draftKey,
   });
-  res.writeHead(307, { Location: `/${content.id}` });
+  res.writeHead(307, { Location: `/blogs/${content.id}` });
   res.end('Preview mode enabled');
 };
